@@ -26,6 +26,13 @@ To split pdf files you must specify the path to the main pdf file and specify th
 - `1:5:21` (splits pages 1, 6, 11, 16, 21)
 - `5:` (splits from page 5 to the end of the document)
 - `:20` (splits from the beginning of the document to page 20)
+
+- `1,5:2:10,15` (split pages 1, 5, 7, 9, 15)
+- `:10,20` (splits from the beginning of the document to page 10 and page 20)
+- `1,5:` (splits page 1 and from page 5 to the end of the document)
+- `1,4:2:` (splits page 1 and pages 4, 6, 8, 10 ... to the end of the document)
+- `:7,10:14` (splits from the beginning of the document to page 7 and pages 10, 11, 12 ... 14)
+- `:3:` (it is divided from the beginning of the document to the end of the document, skipping from 3 pages at a time. Page 1, 4, 7 ... end of document)
 Optionally, with the `-o` or `--output` parameter you can specify the output path of the final file.
 With the `-a` or `--split-all` parameter you split each page of the file into a new file (page_1 page_2, page_3 ... page_n).
 #### Examples:
@@ -41,7 +48,7 @@ pdfpy split document.pdf 2,5:10,15 -o new_document
 ```python
 pdfpy split document.pdf -a -o split_pdf_folder
 ```
-***NOTE:*** When the `-a` `--split-all` parameter is used and the output path is not specified, the files will be saved in the current working directory as page_1.pdf, page_2.pdf, page_3.pdf, page_n.pdf. If you are going to specify the output path (`-o` or `--output` parameter) it cannot contain any extensions, only folder names.
+***NOTE:*** When the `-a` `--split-all` parameter is used and the output path is not specified, the files will be saved in the current working directory as page_1.pdf, page_2.pdf, page_3.pdf, page_n.pdf. If you are going to specify the output path (`-o` or `--output` parameter) it cannot contain any extensions, only folder names. In addition, when using this parameter it is not necessary to set the number of pages, they will be ignored.
 - The following example divides every 3 pages from page 5 to page 14 (5, 8, 11, 14)
 ```python
 pdfpy split document.pdf 5:3:15
@@ -79,4 +86,10 @@ pdfpy join file_1.pdf file_2.pdf file_3.pdf...file_n.pdf -o new/join.pdf
 
 ### Extract text and images
 
+## Note for Windows
+If you want to add the script to the PATH in windows you must add the text string ".py" to the `PATHEXT` environment variable.
+
+```powershell
+$env:PATHEXT += ";.py"
+```
 
