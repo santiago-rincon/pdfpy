@@ -1,8 +1,10 @@
-# Import modules
-import modules.commands as commands
+# Import commands functions
+from modules.controllers.command_join import join as command_join
+from modules.controllers.command_split import split as command_split
+from modules.controllers.command_metadata import metadata as command_metadata
 # Import third-party libraries
 import click
-from colorama import init, Fore
+from colorama import init
 # Initializing colorama for colors in the terminal output
 init()
 
@@ -36,7 +38,7 @@ def join(files, output):
     pdfpy join file_1.pdf file_2.pdf file_3.pdf...file_n.pdf -o new/join.pdf\n
     Tool made by: Cristian Santiago Rincón (https://github.com/santiago-rincon)
     """
-    commands.join(files, output)
+    command_join(files, output)
 
 @cli.command()
 @click.argument('file', type=click.Path(exists=True), metavar='PATH_FILE')
@@ -76,9 +78,26 @@ def split(file, pages, split_all, output):
     pdfpy split document.pdf 1,3,20:\n
     Tool made by: Cristian Santiago Rincón (https://github.com/santiago-rincon)
     """
-    commands.split(file, pages, split_all, output)
+    command_split(file, pages, split_all, output)
     
-
+@cli.command()
+@click.argument('file', type=click.Path(exists=True))
+@click.option('--output', '-o', help='Output file path. By default, the file will be saved in the current working directory with the name "metadata.txt". If the output path contains folders that do not exist, they will be created.  Also, if the output path does not contain the extension ".txt" the file will also be saved as "metadata.txt".', type=click.Path(exists=False))
+@click.option('--write-data', '-w', help='Write metadata to a new pdf file from an external file ("json" and "txt" files allowed).', type=click.Path(exists=True))
+@click.option('--write', '-W', is_flag=True, default=False, help='Write metadata to a new pdf file indicating the information to the CLI.')
+def metadata(file, output, write_data,write):
+    """
+    GET PDF METADATA\n
+    To get the metadata of a pdf file you must specify the path of the file.\n
+    Examples:\n
+    [*] The following example gets the metadata of the file *"document.pdf"* and saves it in the current working directory with the name "metadata.txt".\n
+    pdfpy metadata document.pdf\n
+    [*] The following example gets the metadata of the file *"document.pdf"* and saves it in the directory *new_document* with the name "metadata.txt".\n
+    pdfpy metadata document.pdf -o new_document\n
+    [*] The following example 
+    Tool made by: Cristian Santiago Rincón (https://github.com/santiago-rincon)
+    """
+    command_metadata(file, output, write_data, write)
 
 # Initial flow of the program
 if __name__ == '__main__':

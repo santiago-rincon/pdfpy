@@ -2,3 +2,4 @@ venv
 __pycache__
 .obsidian
 modules/__pycache__
+modules/controllers/__pycache__

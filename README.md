@@ -26,7 +26,6 @@ To split pdf files you must specify the path to the main pdf file and specify th
 - `1:5:21` (splits pages 1, 6, 11, 16, 21)
 - `5:` (splits from page 5 to the end of the document)
 - `:20` (splits from the beginning of the document to page 20)
-
 - `1,5:2:10,15` (split pages 1, 5, 7, 9, 15)
 - `:10,20` (splits from the beginning of the document to page 10 and page 20)
 - `1,5:` (splits page 1 and from page 5 to the end of the document)
