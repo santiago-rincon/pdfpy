@@ -5,7 +5,6 @@ import os, sys, re
 import inquirer
 from colorama import Fore
 
-
 def create_path_pdf(path, name: str):
     if os.path.isfile(path):
         print(
@@ -15,12 +14,10 @@ def create_path_pdf(path, name: str):
         os.makedirs(path)
     return os.path.join(path, f'{name}.pdf')
 
-
 def create_folders(path):
     path = os.path.split(path)[0]
     if not os.path.exists(path):
         os.makedirs(path)
-
 
 def output_file_exist(path, command: str):
     if os.path.exists(path):
@@ -36,7 +33,6 @@ def output_file_exist(path, command: str):
             except OSError as e:
                 print(f'{Fore.RED}[-] Failed to remove the output file\n:{e}')
                 sys.exit(1)
-
 
 def verify_sintax(sintax: str, index: int, array, pages_lenght):
     if re.fullmatch(r'\d+:+\d+:+\d+', sintax):
@@ -149,3 +145,8 @@ def verify_sintax(sintax: str, index: int, array, pages_lenght):
         return list(range(1, pages_lenght+1, int(sintax.split(':')[1])))
     else:
         return f'Syntax error in "{sintax}"'
+
+def check_extension_input_file(path):
+    if not path.endswith('.pdf'):
+        print(f'{Fore.RED}[x] File "{path}" is not a PDF file.\n\tExiting...')
+        sys.exit(1)

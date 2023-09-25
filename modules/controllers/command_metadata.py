@@ -15,9 +15,7 @@ def metadata(file, output, write_data, write, delete):
     # Convert input file to absolute path
     file = os.path.abspath(file)
     # Check if the input file contains the extension ".pdf"
-    if not file.endswith('.pdf'):
-        print(f'{Fore.RED}[x] File "{file}" is not a PDF file.\n\tExiting...')
-        sys.exit(1)
+    utilities.check_extension_input_file(file)
     reader = PdfReader(file)
     metadata = reader.metadata
     dict_metadata = json.loads(json.dumps(metadata))
@@ -103,8 +101,12 @@ def metadata(file, output, write_data, write, delete):
         _write_metadata(output, writer)
     # Case: 0 0 0 1
     elif not output and not write_data and not write and delete:
-        # todo: Create function
-        pass
+        # Create copy of file
+        writer = _create_copy_file_input(reader.pages)
+        # Selection of metadata to delete
+        answers = _select_metadata_to_delete(dict_metadata)
+        # Delete metadata
+        _delete_metadada(answers, dict_metadata, metadata, writer, file)
 
 def _metadata_inquirer():
     continue_write = True
@@ -230,10 +232,11 @@ def _create_copy_file_input(reader):
         writer.add_page(page)
     return writer
 
-def _add_metadata(writer, dictionary_metadata, metadata):
+def _add_metadata(writer, dictionary_metadata, metadata, delete=False):
     # Add metadata
     if bool(dictionary_metadata):
-        writer.add_metadata(metadata)
+        if not delete:
+            writer.add_metadata(metadata)
         writer.add_metadata(dictionary_metadata)
     else:
         writer.add_metadata({})
@@ -247,10 +250,29 @@ def _write_metadata(file, writer):
 
 def _formatting_metadata(key:str, value:str, json_file=False):
     key = key.replace('/', '')
-    isdate = re.fullmatch(r"D:(\d{4})(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})(\+\d{2}'\d{2}')?", value)
+    isdate = re.fullmatch(r'D:(\d{14})(\-?\+?)(\d{2}\'\d{2}\')', value)
     if  isdate and not json_file:
         value = datetime.strptime(value[2:14], '%Y%m%d%H%M%S')
     elif isdate and json_file:
         value = datetime.strptime(value[2:14], '%Y%m%d%H%M%S')
         value = value.strftime('%Y-%m-%d %H:%M:%S')
     return (key, value)
+
+def _delete_metadada(answers, dict_metadata, metadata, writer, file ):
+    if len(answers) > 0:
+        for answer in answers:
+            del dict_metadata['/'+answer.split(':')[0]]
+        writer = _add_metadata(writer, dict_metadata, metadata, delete=True)
+        _write_metadata(file, writer)
+    else:
+        writer = _add_metadata(writer, {}, metadata, delete=True)
+        _write_metadata(file, writer)
+
+def _select_metadata_to_delete(dict_metadata):
+    choises = []
+    for key, value in dict_metadata.items():
+        key,value = _formatting_metadata(key, value)
+        choises.append(f'{key}: {value}')
+    questions = [inquirer.Checkbox('metadata_to_delete',message='What metadata would you want to delete?', choices=choises)]
+    print(f'{Fore.YELLOW}[!] Select the metadata to be deleted with the "space key" or press the "enter key" without selecting anything to delete all metadata.')
+    return inquirer.prompt(questions)['metadata_to_delete']

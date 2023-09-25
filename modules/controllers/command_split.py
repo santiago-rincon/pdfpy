@@ -17,9 +17,7 @@ def split(file, pages:str, split_all:bool, output):
         print(f'{Fore.RED}[x] No pages provided. You must either specify the pages or use the "-a" or "--split-all" parameter to split all pages.\n{Fore.YELLOW}[!] For more information try:\n\t{Fore.LIGHTMAGENTA_EX} pdfpy split --help\n')
         sys.exit(1)
     # Check if the input file contains the extension ".pdf"
-    if not file.endswith('.pdf'):
-        print(f'{Fore.RED}[x] File "{file}" is not a PDF file.\n\tExiting...')
-        sys.exit(1)
+    utilities.check_extension_input_file(file)
     # Check output when --split-all parameter are not specified
     if not split_all:
         # Check if the output file contains the extension ".pdf"

@@ -20,6 +20,7 @@ def cli():
     * Add custom watermarks\n
     * Protect pdf files (add or remove passwords)\n
     * Extract text or images from a specific pdf file or sheet\n
+    All available documentation is: https://github.com/santiago-rincon/pdfpy\n
     Tool made by: Cristian Santiago Rincón (https://github.com/santiago-rincon)
     """
     pass
@@ -37,6 +38,8 @@ def join(files, output):
     pdfpy join file_1.pdf file_2.pdf file_3.pdf...file_n.pdf\n
     [*] The following example joins the pdf files and saves them in the path "new/join.pdf".\n
     pdfpy join file_1.pdf file_2.pdf file_3.pdf...file_n.pdf -o new/join.pdf\n
+    NOTE: the file path can be specified either absolutely or relatively. In addition, the CLI will ignore all paths that do not contain the "pdf " extension. If the output path contains folders that do not exist on the computer, the CLI will create them, and if the output file name is not specified (i.e. the path does not end in ".pdf" extension) it will be saved as "merged.pdf".\n
+    All available documentation is: https://github.com/santiago-rincon/pdfpy\n
     Tool made by: Cristian Santiago Rincón (https://github.com/santiago-rincon)
     """
     command_join(files, output)
@@ -63,6 +66,7 @@ def split(file, pages, split_all, output):
     [*] "1,4:2:" (splits page 1 and pages 4, 6, 8, 10 ... to the end of the document)\n
     [*] ":7,10:14" (splits from the beginning of the document to page 7 and pages 10, 11, 12 ... 14)\n
     [*] ":3:" (it is divided from the beginning of the document to the end of the document, skipping from 3 pages at a time. Page 1, 4, 7 ... end of document)\n
+    Optionally, with the "-o" or "--output" parameter you can specify the output path of the final file. With the "-a" or "--split-all" parameter you split each page of the file into a new file (page_1 page_2, page_3 ... page_n).\n
     Examples:\n
     [*] The following example splits pages 1 to 10 of the file *"documnet.pdf"* and saves it in the current working directory with the name *splited.pdf* (default name).\n
     pdfpy split document.pdf 1:10\n
@@ -70,6 +74,7 @@ def split(file, pages, split_all, output):
     pdfpy split document.pdf 2,5:10,15 -o new_document\n
     [*] The following example splits all pages of the file *"document.pdf"* and saves them in the folder "split_pdf_folder".\n
     pdfpy split document.pdf -a -o split_pdf_folder\n
+    NOTE: When the "-a" "--split-all" parameter is used and the output path is not specified, the files will be saved in the current working directory as page_1.pdf, page_2.pdf, page_3.pdf, page_n.pdf. If you are going to specify the output path ("-o" or "--output" parameter) it cannot contain any extensions, only folder names. In addition, when using this parameter it is not necessary to set the number of pages, they will be ignored.\n
     [*] The following example divides every 3 pages from page 5 to page 14 (5, 8, 11, 14)\n
     pdfpy split document.pdf 5:3:14\n
     [*] The following example splits from the beginning of the document to page 40 \n
@@ -78,6 +83,8 @@ def split(file, pages, split_all, output):
     pdfpy split document.pdf 10:
     [*] The following example divides page 1 and 3 and from page 20 to the end of the document\n
     pdfpy split document.pdf 1,3,20:\n
+    NOTE: the file path can be specified either absolutely or relatively. In addition, the CLI will ignore all paths that do not contain the "pdf " extension. If the output path contains folders that do not exist on the computer, the CLI will create them, and if the output file name is not specified (i.e. the path does not end in ".pdf" extension) it will be saved as "splited.pdf".\n
+    All available documentation is: https://github.com/santiago-rincon/pdfpy\n
     Tool made by: Cristian Santiago Rincón (https://github.com/santiago-rincon)
     """
     command_split(file, pages, split_all, output)
@@ -91,14 +98,27 @@ def split(file, pages, split_all, output):
 @click.option('--delete', '-d', is_flag=True, default=False, help='Delete metadata of pdf file indicating the information to the CLI.')
 def metadata(file, output, write_data, write, delete):
     """
-    GET PDF METADATA\n
-    To get the metadata of a pdf file you must specify the path of the file.\n
+    READ METADATA\n
+    To read the metadata from a file you must specify the path to the pdf file and optionally specify an output path ("-o" or "--output") to export the metadata (.txt, .json).\n
+    Examples\n
+    [*] The following example shows in the console the metadata of the file "example.pdf".\n
+    pdfpy metadata example.pdf\n
+    [*] The following example exports in the file "metadata.txt" the metadata of the file "example.pdf".\n
+    pdfpy metadata example.pdf -o metadata.txt\n
+    NOTE: The output file can be ".txt" or ".json". In case it does not contain any of these extensions, it will be changed to ".txt" by default.\n
+    WRITE METADATA\n
+    To write metadata to a file you must specify the path to the file and with the "-w" or "--write-data" parameter specify the path to a file containing the metadata (the allowed formats are in the "examples folder" of this repository). Or if you want you can specify the "-W" or "-write" parameter so that the CLI will ask you what metadata you want to add. With either option, if you specify the "-o" or "--output" parameter the metadata will be written to a new pdf file (a copy of the source file), otherwise the original file will be overwritten.\n
     Examples:\n
-    [*] The following example gets the metadata of the file *"document.pdf"* and saves it in the current working directory with the name "metadata.txt".\n
-    pdfpy metadata document.pdf\n
-    [*] The following example gets the metadata of the file *"document.pdf"* and saves it in the directory *new_document* with the name "metadata.txt".\n
-    pdfpy metadata document.pdf -o new_document\n
-    [*] The following example 
+    [*] The following example writes the metadata contained in the "metadata.txt" file to a new file named "file_metadata.pdf".\n
+    pdfpy metadata example.pdf -w metadata.txt -o file_metadata.pdf\n
+    [*] The following example adds the metadata contained in the file "metadata.json" to the file "file.pdf" (the source file).\n
+    pdfpy metadata file.pdf -w metadata.json\n
+    [*] The following example will prompt for the metadata to be added and write it to a new file named "new_file.pdf"\n
+    pdfpy metadata example.pdf -W -o new_file.pdf\n
+    DELETE METADATA\n
+    To delete metadata from a file you must specify the file path and the "-d" or "--delete" parameter, the CLI will ask which metadata you want to delete (select with the space key), if you do not select any, all metadata in the file will be deleted (only one called "creator" introduced by PyPDF2 will remain).\n
+    pdfpy metadata new_file.pdf -d\n
+    All available documentation is: https://github.com/santiago-rincon/pdfpy\n
     Tool made by: Cristian Santiago Rincón (https://github.com/santiago-rincon)
     """
     command_metadata(file, output, write_data, write, delete)

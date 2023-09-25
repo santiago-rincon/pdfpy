@@ -78,7 +78,45 @@ pdfpy join file_1.pdf file_2.pdf file_3.pdf...file_n.pdf -o new/join.pdf
 ```
 ***NOTE:*** the file path can be specified either absolutely or relatively. In addition, the CLI will **ignore** all paths that **do not contain** the ***"pdf "*** extension. If the output path contains folders that do not exist on the computer, the CLI will create them, and if the output file name is not specified (i.e. the path does not end in ".pdf" extension) it will be saved as "merged.pdf".
 ### Read and write metadata
+#### Read metadata
+To read the metadata from a file you must specify the path to the pdf file and optionally specify an output path (`-o` or `--output`) to export the metadata (.txt, .json).
+##### Examples
+- The following example shows in the console the metadata of the file *"example.pdf"*.
+```python
+pdfpy metadata example.pdf
+```
+- The following example exports in the file "metadata.txt" the metadata of the file "example.pdf".
+```python
+pdfpy metadata example.pdf -o metadata.txt
+```
+***NOTE:*** the output file can be *".txt"* or *".json"*. In case it does not contain any of these extensions, it will be changed to *".txt"* by default.
+#### Write metadata
+To write metadata to a file you must specify the path to the file and with the `-w` or `--write-data` parameter specify the path to a file containing the metadata (the allowed formats are in the *"examples folder"* of this repository). Or if you want you can specify the `-W` or `-write` parameter so that the CLI will ask you what metadata you want to add. With either option, if you specify the `-o` or `--output` parameter the metadata will be written to a new pdf file (a copy of the source file), otherwise the original file will be overwritten.
+##### Examples:
+- The following example writes the metadata contained in the *"metadata.txt"* file to a new file named *"file_metadata.pdf"*.
+```python
+pdfpy metadata example.pdf -w metadata.txt -o file_metadata.pdf
+```
+- The following example adds the metadata contained in the file "metadata.json" to the file "file.pdf" (the source file).
+```python
+pdfpy metadata file.pdf -w metadata.json
+```
+- The following example will prompt for the metadata to be added (as shown in the following image) and write it to a new file named "new_file.pdf"
+```python
+pdfpy metadata example.pdf -W -o new_file.pdf
+```
 
+![[write_metadata.png]]
+##### Delete metadata
+To delete metadata from a file you must specify the file path and the `-d` or `--delete` parameter, the CLI will ask which metadata you want to delete (select with the space key), if you do not select any, all metadata in the file will be deleted (only one called "creator" introduced by PyPDF2 will remain).
+##### Examples:
+- The following example removes the metadata "Keywords", "Author" and "Title" from the file "new_file.pdf".
+```python
+pdfpy metadata new_file.pdf -d
+```
+![[delete_metadata.png]]
+- The following example removes all metadata from the file "new_file.pdf".
+![[delete_all_metadata.png]]
 ### Add watermark
 
 ### Add and remove password
