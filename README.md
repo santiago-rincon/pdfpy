@@ -32,6 +32,7 @@ To split pdf files you must specify the path to the main pdf file and specify th
 - `1,4:2:` (splits page 1 and pages 4, 6, 8, 10 ... to the end of the document)
 - `:7,10:14` (splits from the beginning of the document to page 7 and pages 10, 11, 12 ... 14)
 - `:3:` (it is divided from the beginning of the document to the end of the document, skipping from 3 pages at a time. Page 1, 4, 7 ... end of document)
+
 Optionally, with the `-o` or `--output` parameter you can specify the output path of the final file.
 With the `-a` or `--split-all` parameter you split each page of the file into a new file (page_1 page_2, page_3 ... page_n).
 #### Examples:
@@ -106,7 +107,7 @@ pdfpy metadata file.pdf -w metadata.json
 pdfpy metadata example.pdf -W -o new_file.pdf
 ```
 
-![[write_metadata.png]]
+![Write metadata](assets/write_metadata.png)
 ##### Delete metadata
 To delete metadata from a file you must specify the file path and the `-d` or `--delete` parameter, the CLI will ask which metadata you want to delete (select with the space key), if you do not select any, all metadata in the file will be deleted (only one called "creator" introduced by PyPDF2 will remain).
 ##### Examples:
@@ -114,9 +115,9 @@ To delete metadata from a file you must specify the file path and the `-d` or `-
 ```python
 pdfpy metadata new_file.pdf -d
 ```
-![[delete_metadata.png]]
+!![Delete metadata](assets/delete_metadata.png)
 - The following example removes all metadata from the file "new_file.pdf".
-![[delete_all_metadata.png]]
+![Delete all metadata](assets/delete_all_metadata.png)
 ### Add watermark
 
 ### Add and remove password
