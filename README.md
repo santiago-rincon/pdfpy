@@ -115,7 +115,7 @@ To delete metadata from a file you must specify the file path and the `-d` or `-
 ```python
 pdfpy metadata new_file.pdf -d
 ```
-!![Delete metadata](assets/delete_metadata.png)
+![Delete metadata](assets/delete_metadata.png)
 - The following example removes all metadata from the file "new_file.pdf".
 ![Delete all metadata](assets/delete_all_metadata.png)
 ### Add watermark
