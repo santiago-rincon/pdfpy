@@ -1,0 +1,6 @@
+Metadata 10,Value 1
+Metadata 20,Value 2
+Metadata 30,Value 3
+Metadata 40,Value 4
+Metadata 50,6125
+Metadata 60,3.1416

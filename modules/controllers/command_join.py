@@ -9,6 +9,7 @@ from colorama import Fore
 from PyPDF2 import PdfWriter
 
 def join(files, output):
+    # Check if the input files are provided
     if not files:
         print(f'{Fore.RED}[x] No files provided\n{Fore.YELLOW}[!] For more information try:\n\t{Fore.LIGHTMAGENTA_EX} pdfpy join --help\n')
         sys.exit(1)

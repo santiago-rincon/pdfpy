@@ -76,7 +76,7 @@ def split(file, pages:str, split_all:bool, output):
                     sys.exit(1)
                 else: 
                     number_pages.extend(result)
-        
+        # Split pages
         pdf_writer = PdfWriter()
         for page in number_pages:
             pdf_writer.add_page(pdf_reader.pages[page-1])

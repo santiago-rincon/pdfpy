@@ -1,0 +1,6 @@
+Metadata 1	Value 1
+Metadata 2	Value 2
+Metadata 3	Value 3
+Metadata 4	Value 4
+Metadata 5	6125
+Metadata 6	3.1416
