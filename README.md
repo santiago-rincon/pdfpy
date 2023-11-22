@@ -3,9 +3,9 @@ PDFPY is a python command line interface (CLI) tool that uses the [PyPDF2](https
 - [Join pdf files](#join-pdf)
 - [Separate sheets of a pdf file](#split-pdf-sheets)
 - [Read or write metadata in pdf files](#read-and-write-metadata)
-- [Add custom watermarks]()
-- [Protect pdf files](#add-or-remove-passwords)
-- [Extract text or images from a specific pdf file or sheet](# extract-text-and-images)
+- [Add custom watermarks](add-watermark)
+- [Protect pdf files](#add-and-remove-passwords)
+- [Extract text or images from a specific pdf file or sheet](#extract-text-and-images)
 ## Installation 
 To install the CLI you must:
 1. Clone the repository
