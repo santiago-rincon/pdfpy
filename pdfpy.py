@@ -2,6 +2,7 @@
 from modules.controllers.command_join import join as command_join
 from modules.controllers.command_split import split as command_split
 from modules.controllers.command_metadata import metadata as command_metadata
+from modules.controllers.command_crypt import crypt as command_crypt
 # Import third-party libraries
 import click
 from colorama import init
@@ -10,6 +11,8 @@ from colorama import init
 init()
 
 # Group of click
+
+
 @click.group()
 def cli():
     """
@@ -25,7 +28,9 @@ def cli():
     """
     pass
 
-# Definition of the join command 
+# Definition of the join command
+
+
 @cli.command()
 @click.argument('files', nargs=-1, type=click.Path(exists=True))
 @click.option('--output', '-o', default='merged.pdf', help='Output file path. By default, the file will be saved in the current working directory with the name "merged.pdf". If the output path contains folders that do not exist, they will be created.  Also, if the output path does not contain the extension ".pdf" the file will also be saved as "merged.pdf".', type=click.Path(exists=False))
@@ -45,6 +50,8 @@ def join(files, output):
     command_join(files, output)
 
 # Definition of the split command
+
+
 @cli.command()
 @click.argument('file', type=click.Path(exists=True), metavar='PATH_FILE')
 @click.argument('pages', metavar='PAGES', required=False)
@@ -89,7 +96,9 @@ def split(file, pages, split_all, output):
     """
     command_split(file, pages, split_all, output)
 
-# Definition of the metadata command    
+# Definition of the metadata command
+
+
 @cli.command()
 @click.argument('file', type=click.Path(exists=True))
 @click.option('--output', '-o', help='Output file path. By default, the file will be saved in the current working directory with the name "metadata.txt". If the output path contains folders that do not exist, they will be created.  Also, if the output path does not contain the extension ".txt" the file will also be saved as "metadata.txt".', type=click.Path(exists=False))
@@ -122,6 +131,31 @@ def metadata(file, output, write_data, write, delete):
     Tool made by: Cristian Santiago Rincón (https://github.com/santiago-rincon)
     """
     command_metadata(file, output, write_data, write, delete)
+
+# Definition of the encrypt and decrypt command
+
+
+@cli.command()
+@click.argument('file', type=click.Path(exists=True))
+@click.argument('mode', type=click.Choice(['encrypt', 'decrypt']))
+@click.argument('password', type=str)
+@click.option('--output', '-o', help='Output file path. By default, the file will be saved in the current working directory with the name "encrypted.pdf" or "decrypted.pdf". If the output path contains folders that do not exist, they will be created.  Also, if the output path does not contain the extension ".pdf" will be taked like a directory.', type=click.Path(exists=False))
+def crypt(file, mode, password, output):
+    """
+    ENCRYPT AND DECRYPT FILE\n
+    To encrypt or decrypt a file you must specify the path to the pdf file, the mode (encrypt or decrypt), the password (if it has spaces it must be enclosed in single quotation marks) and optionally specify an output path ("-o" or "--output") to export the file decrypted.\n
+    Examples\n
+    [*] The following example encrypt file "example.pdf" with the password "test".\n
+    pdfpy crypt example.pdf encrypt test\n
+    [*] The following example decrypt file "example.pdf".\n
+    pdfpy crypt example.pdf decrypt test\n
+    [*] The following example encrypt file "example.pdf" with the password "spaces in the password" and save in a new file named "encrypted_example.pdf".\n
+    pdfpy crypt example.pdf encrypt 'spaces in the password' -o encrypted_example.pdf\n
+    All available documentation is: https://github.com/santiago-rincon/pdfpy\n
+    Tool made by: Cristian Santiago Rincón (https://github.com/santiago-rincon)
+    """
+    command_crypt(file, mode, password, output)
+
 
 # Initial flow of the program
 if __name__ == '__main__':

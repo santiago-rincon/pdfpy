@@ -1,11 +1,11 @@
 # PDFPY
 PDFPY is a python command line interface (CLI) tool that uses the [PyPDF2](https://pypdf2.readthedocs.io/en/3.0.0/index.html) library to manipulate pdf files in a local environment. With this CLI you can:
-- Join pdf files
-- Separate sheets of a pdf file
-- Read or write metadata in pdf files
-- Add custom watermarks
-- Protect pdf files (add or remove passwords)
-- Extract text or images from a specific pdf file or sheet
+- [Join pdf files](#join-pdf)
+- [Separate sheets of a pdf file](#split-pdf-sheets)
+- [Read or write metadata in pdf files](#read-and-write-metadata)
+- [Add custom watermarks]()
+- [Protect pdf files](#add-or-remove-passwords)
+- [Extract text or images from a specific pdf file or sheet](# extract-text-and-images)
 ## Installation 
 To install the CLI you must:
 1. Clone the repository
@@ -121,7 +121,25 @@ pdfpy metadata new_file.pdf -d
 ### Add watermark
 
 ### Add and remove password
+To encrypt or decrypt a file you must specify the path to the pdf **file**, the **mode** (encrypt or decrypt), the **password** (if it has spaces it must be enclosed in single quotation marks) and optionally specify an **output path** ("-o" or "--output") to export the file decrypted.
 
+```shell
+pdfpy crypt <FILE> <MODE> <PASSWORD> -o <OUTPUT_PATH>
+```
+#### Examples:
+- The following example encrypt file "example.pdf" with the password "test" and save in the current working directory.
+```python
+pdfpy crypt example.pdf encrypt test
+```
+- The following example decrypt file "example.pdf" with the password "test" and save in the current working directory.
+```python
+pdfpy crypt example.pdf decrypt test
+```
+- The following example encrypt file "example.pdf" with the password "spaces in the password" and save in a new file named "encrypted_example.pdf".
+```python
+pdfpy crypt example.pdf encrypt 'spaces in the password' -o encrypted_example.pdf
+```
+***NOTE:*** the file path can be specified either absolutely or relatively. In addition, the CLI will **ignore** all paths that **do not contain** the ***"pdf "*** extension. If the output path contains folders that do not exist on the computer, the CLI will create them, and if the output file name is not specified (i.e. the path does not end in ".pdf" extension) it will be saved as "merged.pdf".
 ### Extract text and images
 
 ## Note for Windows
